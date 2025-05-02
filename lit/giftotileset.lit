@@ -1,0 +1,62 @@
+@code_type sh .sh
+@comment_type # %s
+@compiler shellcheck giftotileset
+
+@title gif to tile set
+
+@s Using imagemagick and .ppm filetype
+
+I want to convert the gif file from grafx2 to a c array.
+The first step is to convert the binary gif format into a more human readable format, which is a version of ppm
+
+- The use of `tiled_world_layer_%02d.ppm`, specifically `%02d` means when we make multiple files, name them with a 2 digit number here.
+- There is use of the `-coalesce` option here, as an ordinary gif file will not retain the orginal size of the layer, but instead try to shorten it down. This may be useful as it would also mean less checks for underlay fill tiles, but for sake of simplicity I won't do that.
+--- giftotileset.sh
+#!/usr/bin/sh
+# you have to set the world as non-transparent, i.e. by selecting an unused color as the transparent color.
+convert assets/tiled_world_layers.gif -coalesce -compress none assets/tiled_world_layer_%02d.ppm # split gif to seperate frames
+---
+
+--- giftotileset.sh +=
+sed -i 's/\([0-9]\+\) \([0-9]\+\) \([0-9]\+\) /\1_\2_\3 /g' tiled_world_layer_0* # join blocks of 3 numbers
+sed -i 's/255_0_0/1/g' tiled_world_layer_0* # turn red into tile 1
+sed -i 's/0_255_0/2/g' tiled_world_layer_0*
+sed -i 's/0_0_255/3/g' tiled_world_layer_0*
+sed -i 's/0_0_0/0/g' tiled_world_layer_0*
+sed -i '1d' tiled_world_layer_0* # delete first line
+sed -i '2d' tiled_world_layer_0* # delete third line
+sed -i '1s/\([0-9]\+\) \([0-9]\+\)/int tileset_n\[\1\]\[\2\] = {/' tiled_world_layer_0* # use height and width to make dimensions of array
+sed -i '2,$s/^/{/' tiled_world_layer_0* # make into array
+sed -i '2,$s/ $/},/' tiled_world_layer_0*
+sed -i '$s/},/}};/' tiled_world_layer_0*
+sed -i '2,$s/ /,/g' tiled_world_layer_0*
+
+# move to c file TODO use bash to mv to c file before sed
+cp tiled_world_layer_00.ppm tiled_world_layer_00.c
+---
+
+--- rotate_gif.sh
+#!/usr/bin/sh
+convert assets/dual_grid_tiles_prod.gif -crop 16x16+0+0 +repage assets/tileset1/outer_corner_0.gif
+convert assets/dual_grid_tiles_prod.gif -crop 16x16+16+0 +repage assets/tileset1/edge_connector_0.gif
+convert assets/dual_grid_tiles_prod.gif -crop 16x16+32+0 +repage assets/tileset1/inner_corner_0.gif
+convert assets/dual_grid_tiles_prod.gif -crop 16x16+0+16 +repage assets/tileset1/border_0.gif
+convert assets/dual_grid_tiles_prod.gif -crop 16x16+16+16 +repage assets/tileset1/overlay_fill_0.gif
+convert assets/dual_grid_tiles_prod.gif -crop 16x16+32+16 +repage assets/tileset1/underlay_fill_0.gif
+
+convert -rotate 90 assets/tileset1/outer_corner_0.gif assets/tileset1/outer_corner_1.gif
+convert -rotate 180 assets/tileset1/outer_corner_0.gif assets/tileset1/outer_corner_2.gif
+convert -rotate 270 assets/tileset1/outer_corner_0.gif assets/tileset1/outer_corner_3.gif
+
+convert -rotate 90 assets/tileset1/edge_connector_0.gif assets/tileset1/edge_connector_1.gif
+
+convert -rotate 90 assets/tileset1/border_0.gif assets/tileset1/border_1.gif
+convert -rotate 180 assets/tileset1/border_0.gif assets/tileset1/border_2.gif
+convert -rotate 270 assets/tileset1/border_0.gif assets/tileset1/border_3.gif
+
+convert -rotate 90 assets/tileset1/inner_corner_0.gif assets/tileset1/inner_corner_1.gif
+convert -rotate 180 assets/tileset1/inner_corner_0.gif assets/tileset1/inner_corner_2.gif
+convert -rotate 270 assets/tileset1/inner_corner_0.gif assets/tileset1/inner_corner_3.gif
+---
+
+

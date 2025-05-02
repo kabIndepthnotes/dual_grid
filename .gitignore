@@ -1,0 +1,22 @@
+log.txt
+
+# all builds
+window_build/*
+linux_build/*
+web_build/*
+
+
+window_include/*
+linux_include/*
+web_include/*
+ray_include/*
+
+# except readmes
+!window_build/README.md
+!linux_build/README.md
+!web_build/README.md
+
+!window_include/README.md
+!linux_include/README.md
+!web_include/README.md
+!ray_include/README.md
