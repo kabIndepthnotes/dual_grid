@@ -1,19 +1,15 @@
 If you would like to use this code in your projects, it is strongly recommended (but it is not required) that you have donated at least £0.50 to indepthnotes, either through youtube superthanks, the buymeacoffeelink, or the various other methods (indepthnotes.com/donate).
 
-# prerequistes
-- for windows compiling you need a cross-compiler such as gcc-mingw-w64-x86-64
-- for web builds you will need to compile raylib to work with web. To do this you need emscripten.
-- you need a regular raylib.h headerfile compiled for everything else.
-- I follow the literate programming style, and use https://github.com/zyedidia/Literate . This is not necessary and you simply have to change the MAKEFILE accordingly.
+dual_grid is a simple tilemap editor that converts a tilemap (a glorified gif file) into a level and a set of raylib rectangles, ready for a game.
 
-# windows cross compile
-- The steps are similar to compiling raylib for linux, but you must supply some flags
-`make PLATFORM=PLATFORM_DESKTOP CC=x86_64-w64-mingw32-gcc PLATFORM_OS=WINDOWS`
+# Quick start
+- edit the tilegrid assets/tiled_world_layers.gif, this is the grid that the player can move around in, such as a level. Use white for the tiles and black for the background.
+- edit the tileset assets/dual_grid_tiles_production.gif, this is what dual_grid uses to draw the tilegrid. see assets/dual_grid_tiles_template.gif for a template.
+- run `make linux` to generate the tilemap.c, the individual tiles.
+- view the dual grid you made in with `./linux_build/main`
 
-# web compiling
-- as of Thursday 6 Mar 2025 the commandline compilation of the web build ( https://github.com/raysan5/raylib/wiki/Working-for-Web-(HTML5)#21-command-line-compilation ) does not work, I recommend using the command below
-- `make PLATFORM=PLATFORM_WEB # To make web version.`
-
+# See Also
+This was initially made with the template https://github.com/kabIndepthnotes/raylib_game_template. See that for creating an windows executable or web application.
 
 # Donations and Support
 see https://indepthnotes.com/donate
@@ -25,3 +21,6 @@ Buy me a Coffee buymeacoffee.com/indepthnotes
 Send me Monero, My address is: 43Q7GUmbhRTiqLGCaEXgwRPDQMvkEqADKQuG7VBfbnYNGdrjVU7ZUhaa5sLxZYKGbH3Hrcax9kKxp72exX4wRunhRBBHBns
 
 Send me Bitcoin, My address is: bc1qepemmagg5k47z8sr62tnk9we3hr5fwslyhmhh2
+
+# Credit
+The production quality tileset was inspired by https://mtk.itch.io/2d-metroidvania-bio-sci-fi-tileset-16x16 so if you enjoyed it and want a full tileset go check out that content!

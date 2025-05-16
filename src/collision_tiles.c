@@ -26,14 +26,14 @@ main(void)
 
 			int travel_x = 1;
 			int travel_y = 1;
-			if (tilemap_tileset_0[y][x] == 1) {
+			if (tileset_n[y][x] == 1) {
 				/* go_right_as_far_as_possible */
 				bool is_in_bounds;
 				bool is_tile_solid;
 				bool is_travelled_before;
 				for (;;) {
 					is_in_bounds = x + travel_x < 40;
-					is_tile_solid = tilemap_tileset_0[y][x + travel_x] == 1;
+					is_tile_solid = tileset_n[y][x + travel_x] == 1;
 					is_travelled_before = travelled_tiles[y][x + travel_x] != 0;
 				
 					if (is_in_bounds && is_tile_solid && !(is_travelled_before)) {
@@ -48,9 +48,9 @@ main(void)
 
 				/* printf("travel_x = %d, x = %d, y = %d\n", travel_x, x, y ); */
 				/* see_how_tall_the_widest_rectangle_is */
-				while (tilemap_tileset_0[y + travel_y][x] == 1 && y + travel_y < 22) {
+				while (tileset_n[y + travel_y][x] == 1 && y + travel_y < 22) {
 					for (int tx = 0; tx < travel_x; tx++) { // check line is solid
-						bool is_hole = tilemap_tileset_0[y + travel_y][x + tx] != 1;
+						bool is_hole = tileset_n[y + travel_y][x + tx] != 1;
 						bool is_travelled_before = travelled_tiles[y + travel_y][x + tx] != 0;
 						if ( is_hole || is_travelled_before ) {
 							goto end_loop;

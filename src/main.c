@@ -57,10 +57,10 @@ main(void)
 	for (int x = 0; x < 40 - 1; x++) {
 		for (int y = 0; y < 22 - 1; y++) {
 			/* outer corner */
-			pos_0 = tilemap_tileset_0[y][x];
-			pos_1 = tilemap_tileset_0[y][x+1];
-			pos_2 = tilemap_tileset_0[y+1][x];
-			pos_3 = tilemap_tileset_0[y+1][x+1];
+			pos_0 = tileset_n[y][x];
+			pos_1 = tileset_n[y][x+1];
+			pos_2 = tileset_n[y+1][x];
+			pos_3 = tileset_n[y+1][x+1];
 	
 			/* outer corner */
 			if (is_tile(pos_0, pos_1, pos_2, pos_3, 1 ,0 ,0 ,0)){

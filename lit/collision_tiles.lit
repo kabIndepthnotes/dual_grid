@@ -6,7 +6,7 @@
 
 @s adding collision to the tiles
 With our grid, I need to visualise the collision rectangles.
-The collision rectangles will probably be calculated at runtime, from the `tilemap_tileset_0` array.
+The collision rectangles will probably be calculated at runtime, from the `tileset_n` array.
 I need to think of the datastructure that the collision rectangles will be.
 We don't know how many there will be, They will each be a fixed size.
 Once they are initialised then I don't need to add, take away or insert rectangles, but instead start afresh for a new room.
@@ -57,7 +57,7 @@ for (int y = 0; y < 22; y++) {
 		@{skip_seen_tiles}
 		int travel_x = 1;
 		int travel_y = 1;
-		if (tilemap_tileset_0[y][x] == 1) {
+		if (tileset_n[y][x] == 1) {
 			@{go_right_as_far_as_possible}
 			/* printf("travel_x = %d, x = %d, y = %d\n", travel_x, x, y ); */
 			@{see_how_tall_the_widest_rectangle_is}
@@ -75,7 +75,7 @@ bool is_tile_solid;
 bool is_travelled_before;
 for (;;) {
 	is_in_bounds = x + travel_x < 40;
-	is_tile_solid = tilemap_tileset_0[y][x + travel_x] == 1;
+	is_tile_solid = tileset_n[y][x + travel_x] == 1;
 	is_travelled_before = travelled_tiles[y][x + travel_x] != 0;
 
 	if (is_in_bounds && is_tile_solid && !(is_travelled_before)) {
@@ -91,23 +91,23 @@ travelled_tiles[y][x] = travel_x; //que to jump ahead travel_x
 
 --- go_right_as_far_as_possible_2
 bool is_in_bounds = x + travel_x < 40;
-bool is_tile_solid = tilemap_tileset_0[y][x + travel_x] == 1;
+bool is_tile_solid = tileset_n[y][x + travel_x] == 1;
 bool is_travelled_before = travelled_tiles[y][x + travel_x] != 0;
 
 while (is_in_bounds && is_tile_solid && !(is_travelled_before)) {
 	travel_x++;
 
 	is_in_bounds = x + travel_x < 40;
-	is_tile_solid = tilemap_tileset_0[y][x + travel_x] == 1;
+	is_tile_solid = tileset_n[y][x + travel_x] == 1;
 	is_travelled_before = travelled_tiles[y][x + travel_x] != 0;
 }
 travelled_tiles[y][x] = travel_x; //que to jump ahead travel_x
 ---
 
 --- see_how_tall_the_widest_rectangle_is
-while (tilemap_tileset_0[y + travel_y][x] == 1 && y + travel_y < 22) {
+while (tileset_n[y + travel_y][x] == 1 && y + travel_y < 22) {
 	for (int tx = 0; tx < travel_x; tx++) { // check line is solid
-		bool is_hole = tilemap_tileset_0[y + travel_y][x + tx] != 1;
+		bool is_hole = tileset_n[y + travel_y][x + tx] != 1;
 		bool is_travelled_before = travelled_tiles[y + travel_y][x + tx] != 0;
 		if ( is_hole || is_travelled_before ) {
 			goto end_loop;
@@ -120,7 +120,7 @@ while (tilemap_tileset_0[y + travel_y][x] == 1 && y + travel_y < 22) {
 
 
 --- debug_variables
-int tilemap_tileset_0[22][40] = {
+int tileset_n[22][40] = {
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 {0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1},
