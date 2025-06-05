@@ -311,7 +311,7 @@ draw_layer_0(tileset_0_dual);
 
 
 --- external_variables +=
-Texture2D layer_0[UNDERLAY_FILL_0]; // UNDERLAY_FILL_0 is the last enum
+Texture2D layer_0[UNDERLAY_FILL_0 + 1]; // UNDERLAY_FILL_0 is the last enum
 ---
 
 TODO if optimize needed, we should load one big texture then draw each accordingly.
